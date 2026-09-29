@@ -50,12 +50,15 @@ public class Playermovment : MonoBehaviour
 
     void CameraMovment()
     {
+        // Gets the Axis
         float mouseX = Input.GetAxis("Mouse X") * MouseSensitivity;
         float mouseY = Input.GetAxis("Mouse Y") * MouseSensitivity;
 
         transform.Rotate(Vector3.up * mouseX);
 
         Vertical_Rotation -= mouseY;
+        
+        // Clamps the value (Important!)
         Vertical_Rotation = Mathf.Clamp(Vertical_Rotation, -90f, 90f);
 
         cam.transform.localRotation = Quaternion.Euler(Vertical_Rotation, 0f, 0f);
@@ -63,22 +66,27 @@ public class Playermovment : MonoBehaviour
 
     void PlayerMovment()
     {
+        // Gets the Movement Axis
         float movementX = Input.GetAxis("Horizontal");
         float movementZ = Input.GetAxis("Vertical");
 
         move = transform.right * movementX + transform.forward * movementZ;
+        
+        // Calculates the Speed
         float currentSpeed = WalkSpeed + additionalSpeed;
 
+        // If Player is Sprinting
         if (Input.GetKey(KeyCode.LeftShift))
         {
             currentSpeed *= sprintSpeed;
         }
 
         isGrounded = player.isGrounded;
-
+        // Checks if rhe player is on ground
         if (isGrounded)
         {
-            velocityY = -2f; // am Boden bleiben
+            velocityY = -2f; 
+            // Jump
             if (Input.GetKeyDown(KeyCode.Space))
             {
                 velocityY = jumpForce + additionalJump;
